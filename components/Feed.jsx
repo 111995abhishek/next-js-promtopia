@@ -2,10 +2,10 @@
 import {useState, useEffect} from 'react';
 import PromptCard from './PromptCard';
 
-const PromptCardList = ({data,handleTagClick}) =>{
+const PromptCardList = ({data,handleTagClick,searchText}) =>{
   return(
     <div className='mt-16 prompt_layout'>
-      {data.map((post)=>{
+      {data.filter((post)=>post.tag.indexOf(searchText)>-1).map((post)=>{
         return(
           <PromptCard
           key={post.id}
@@ -21,7 +21,7 @@ const Feed = () => {
   const [searchText, setSearchText] = useState('');
   const [posts, setPosts] = useState([]);
   const handleSearchChange = (e) => {
-
+    setSearchText(e.target.value)
   }
 
   useEffect(()=>{
@@ -37,7 +37,7 @@ const Feed = () => {
       <form className='relative w-full flex-center'>
         <input
         type='text'
-        placeholder='search for a tag or username'
+        placeholder='search for a tag'
         value={searchText}
         onChange={handleSearchChange}
         required
@@ -47,7 +47,7 @@ const Feed = () => {
       <PromptCardList
       data={posts}
       handleTagClick={()=>{}}
-
+      searchText={searchText}
       />
     </section>
   )
